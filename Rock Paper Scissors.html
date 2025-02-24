@@ -4,13 +4,35 @@
     <meta charset="UTF-8">
     <title>Rock Paper Scissors</title>
 </head>
+
+
 <body>
+   
+ <!-- Ces commentaires expliquent l'objectif et la logique -->
+  <!--
+    L’ordinateur choisit une valeur aléatoire entre 1 et 3
+    En fonction de la valeur, pierre, papier ou ciseaux sont assignés au choix
+    Le joueur entre son choix entre pierre, papier ou ciseaux
+    En fonction du choix du joueur, il perd ou gagne la partie
+    L’ordinateur retient le score du joueur
+  -->
+
+
     <h1>Rock Paper Scissors</h1>
     <h2>The game</h2>
 
 
     <script>
         console.log("Hello World!");
+
+        const getComputerChoice = () => {
+    return Math.floor(Math.random() * 3); // Renvoie soit 0, 1 ou 2
+};
+
+console.log(getComputerChoice()); // Affiche un nombre aléatoire (0, 1 ou 2)
+
+
+
     </script>
 
 </body>
