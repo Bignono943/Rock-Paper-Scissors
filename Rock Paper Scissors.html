@@ -24,12 +24,37 @@
 
     <script>
         console.log("Hello World!");
-
+         
+        const choices = ["pierre", "papier", "ciseaux"];
         const getComputerChoice = () => {
-    return Math.floor(Math.random() * 3); // Renvoie soit 0, 1 ou 2
+        const randomIndex = Math.floor(Math.random() * choices.length); // Renvoie soit 0, 1 ou 2 et s'adapte automatiquement en fonction du nmbre de choix
+        return choices[randomIndex];
+
 };
 
 console.log(getComputerChoice()); // Affiche un nombre aléatoire (0, 1 ou 2)
+
+let choix = prompt("Pierre, papier ou ciseaux ? (écris en minuscule)");
+
+const getHumanChoice = (humanChoice) => {
+    if (choix === "pierre") {
+        return choices[0];
+    } else if (choix === "papier") {
+        return choices [1];
+    } else if (choix === "ciseaux") {
+        return choices [2];
+    } else {
+        return "Choix invalide"
+    }
+}
+
+
+console.log(getHumanChoice(humanChoice));
+
+let humanScore = 0;
+let computerScore = 0;
+
+console.log(humanScore, computerScore);
 
 
 
