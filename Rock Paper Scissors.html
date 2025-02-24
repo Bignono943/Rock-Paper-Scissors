@@ -25,36 +25,84 @@
     <script>
         console.log("Hello World!");
          
-        const choices = ["pierre", "papier", "ciseaux"];
-        const getComputerChoice = () => {
-        const randomIndex = Math.floor(Math.random() * choices.length); // Renvoie soit 0, 1 ou 2 et s'adapte automatiquement en fonction du nmbre de choix
-        return choices[randomIndex];
+        const choices = ["pierre", "papier", "ciseaux"]; 
 
+
+const getComputerChoice = () => {
+  const randomIndex = Math.floor(Math.random() * choices.length); 
+  return choices[randomIndex]; 
 };
 
-console.log(getComputerChoice()); // Affiche un nombre aléatoire (0, 1 ou 2)
 
-let choix = prompt("Pierre, papier ou ciseaux ? (écris en minuscule)");
-
-const getHumanChoice = (humanChoice) => {
-    if (choix === "pierre") {
-        return choices[0];
-    } else if (choix === "papier") {
-        return choices [1];
-    } else if (choix === "ciseaux") {
-        return choices [2];
-    } else {
-        return "Choix invalide"
-    }
-}
+let choix = prompt("Pierre, papier ou ciseaux ?");
 
 
-console.log(getHumanChoice(humanChoice));
+const getHumanChoice = (choix) => {
+  
+  if (choix === "pierre" || choix === "papier" || choix === "ciseaux") {
+    return choix; 
+  } else {
+    return null; 
+  }
+};
+
 
 let humanScore = 0;
 let computerScore = 0;
 
-console.log(humanScore, computerScore);
+
+const victoire = "Victoire !";
+const défaite = "Perdu !";
+
+// Fonction principale pour comparer les choix et déterminer le résultat d'une manche
+let playRound = (humanChoice, computerChoice) => {
+  humanChoice = humanChoice.toLowerCase().trim();
+  computerChoice = computerChoice.toLowerCase().trim();
+
+  console.log("Human choice:", humanChoice);
+  console.log("Computer choice :", computerChoice);
+
+  if (humanChoice === computerChoice) {
+    return "Égalité !"; 
+  } 
+  else if (
+    (humanChoice === "papier" && computerChoice === "pierre") || 
+    (humanChoice === "pierre" && computerChoice === "ciseaux") ||
+    (humanChoice === "ciseaux" && computerChoice === "papier")
+  ) {
+    humanScore++; 
+    return victoire;
+  } 
+  else {
+    computerScore++; 
+    return défaite;
+  }
+};
+
+
+const humanSelection = getHumanChoice(choix);
+
+if (!humanSelection) {
+  
+  console.log("Choix invalide. Veuillez actualiser la page et choisir entre 'pierre', 'papier' ou 'ciseaux'.");
+} else {
+
+  const computerSelection = getComputerChoice();
+
+  // Joue une manche
+  const result = playRound(humanSelection, computerSelection);
+
+  console.log(result);
+
+  // Affiche les scores actuels
+  console.log(`Score humain : ${humanScore}, Score ordinateur : ${computerScore}`);
+}
+
+
+
+
+
+
 
 
 
