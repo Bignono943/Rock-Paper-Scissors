@@ -25,78 +25,81 @@
     <script>
         console.log("Hello World!");
          
-        const choices = ["pierre", "papier", "ciseaux"]; 
 
+const choices = ["pierre", "papier", "ciseaux"];
 
-const getComputerChoice = () => {
-  const randomIndex = Math.floor(Math.random() * choices.length); 
-  return choices[randomIndex]; 
-};
+const getHumanChoice = () => {
+  let choix = prompt("Pierre, papier ou ciseaux ?");
+  choix = choix ? choix.toLowerCase().trim() : null;
 
-
-let choix = prompt("Pierre, papier ou ciseaux ?");
-
-
-const getHumanChoice = (choix) => {
-  
-  if (choix === "pierre" || choix === "papier" || choix === "ciseaux") {
-    return choix; 
+  if (choices.includes(choix)) {
+    return choix;
   } else {
-    return null; 
+    console.log("Choix invalide. Essayez de nouveau ! (Pierre, Papier, Ciseaux)");
+    return null;
   }
 };
 
+const getComputerChoice = () => {
+  const randomIndex = Math.floor(Math.random() * choices.length);
+  return choices[randomIndex];
+};
 
-let humanScore = 0;
-let computerScore = 0;
-
-
-const victoire = "Victoire !";
-const défaite = "Perdu !";
-
-// Fonction principale pour comparer les choix et déterminer le résultat d'une manche
-let playRound = (humanChoice, computerChoice) => {
-  humanChoice = humanChoice.toLowerCase().trim();
-  computerChoice = computerChoice.toLowerCase().trim();
-
-  console.log("Human choice:", humanChoice);
-  console.log("Computer choice :", computerChoice);
-
+const playRound = (humanChoice, computerChoice) => {
   if (humanChoice === computerChoice) {
-    return "Égalité !"; 
-  } 
-  else if (
-    (humanChoice === "papier" && computerChoice === "pierre") || 
+    return "Égalité !";
+  } else if (
+    (humanChoice === "papier" && computerChoice === "pierre") ||
     (humanChoice === "pierre" && computerChoice === "ciseaux") ||
     (humanChoice === "ciseaux" && computerChoice === "papier")
   ) {
-    humanScore++; 
-    return victoire;
-  } 
-  else {
-    computerScore++; 
-    return défaite;
+    return "Victoire !";
+  } else {
+    return "Défaite !";
   }
 };
 
+const playGame = () => {
+  let humanScore = 0;
+  let computerScore = 0;
 
-const humanSelection = getHumanChoice(choix);
+  for (let i = 0; i < 5; i++) {
+    console.log(`Manche ${i + 1}`);
 
-if (!humanSelection) {
-  
-  console.log("Choix invalide. Veuillez actualiser la page et choisir entre 'pierre', 'papier' ou 'ciseaux'.");
-} else {
+    let humanSelection = null;
+    while (!humanSelection) {
+      humanSelection = getHumanChoice();
+    }
 
-  const computerSelection = getComputerChoice();
+    const computerSelection = getComputerChoice();
 
-  // Joue une manche
-  const result = playRound(humanSelection, computerSelection);
+    console.log(`Choix du joueur : ${humanSelection}`);
+    console.log(`Choix de l'ordinateur : ${computerSelection}`);
 
-  console.log(result);
+    const result = playRound(humanSelection, computerSelection);
+    console.log(result);
 
-  // Affiche les scores actuels
-  console.log(`Score humain : ${humanScore}, Score ordinateur : ${computerScore}`);
-}
+    if (result === "Victoire !") {
+      humanScore++;
+    } else if (result === "Défaite !") {
+      computerScore++;
+    }
+
+    console.log(`Score : Humain ${humanScore}, Ordinateur ${computerScore}`);
+  }
+
+  console.log("Partie terminée !");
+  if (humanScore > computerScore) {
+    console.log("Vous avez gagné la partie !");
+  } else if (humanScore < computerScore) {
+    console.log("L'ordinateur a gagné la partie !");
+  } else {
+    console.log("La partie est une égalité !");
+  }
+};
+
+// Démarrer le jeu
+playGame();
 
 
 
