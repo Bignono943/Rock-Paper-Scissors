@@ -7,45 +7,96 @@
 
 
 <body>
-   
- <!-- Ces commentaires expliquent l'objectif et la logique -->
-  <!--
-    L’ordinateur choisit une valeur aléatoire entre 1 et 3
-    En fonction de la valeur, pierre, papier ou ciseaux sont assignés au choix
-    Le joueur entre son choix entre pierre, papier ou ciseaux
-    En fonction du choix du joueur, il perd ou gagne la partie
-    L’ordinateur retient le score du joueur
-  -->
+
+
+
+  
+
+    <div class="container">
 
 
     <h1>Rock Paper Scissors</h1>
     <h2>The game</h2>
 
+    <div  id="button">
+
+      <h3>Choisissez entre pierre, papier et ciseaux</h3>
+
+      <button id="pierre">Pierre</button>
+      <button id="papier">Papier</button>
+      <button id="ciseaux">Ciseaux</button>
+
+
+
+    </div>
+
+
+
+
+    </div>
+
 
     <script>
         console.log("Hello World!");
-         
+
 
 const choices = ["pierre", "papier", "ciseaux"];
-
-const getHumanChoice = () => {
-  let choix = prompt("Pierre, papier ou ciseaux ?");
-  choix = choix ? choix.toLowerCase().trim() : null;
-
-  if (choices.includes(choix)) {
-    return choix;
-  } else {
-    console.log("Choix invalide. Essayez de nouveau ! (Pierre, Papier, Ciseaux)");
-    return null;
-  }
+const choicesMap = {
+  pierre: choices[0], 
+  papier: choices[1], 
+  ciseaux: choices[2] 
 };
 
-const getComputerChoice = () => {
+        const getComputerChoice = () => {
   const randomIndex = Math.floor(Math.random() * choices.length);
   return choices[randomIndex];
 };
 
+const container = document.querySelector(".container");
+
+const result = document.createElement("div");
+result.classList.add("result");
+container.appendChild(result);
+const h3Result = document.createElement("h3");
+h3Result.textContent = "Résultat :";
+result.appendChild(h3Result);
+
+let humanSelection = null;
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+
+    buttons.forEach((btn) => btn.style.background = " ");
+    e.target.style.background = "red";
+
+    const humanSelection = choicesMap[e.target.id];
+    const computerSelection = getComputerChoice();
+
+    const paraChoice = document.createElement("p");
+    paraChoice.textContent = " ";
+    paraChoice.innerHTML = `Vous avez choisi : ${humanSelection}<br>L'ordinateur a choisi : ${computerSelection}`;
+    result.appendChild(paraChoice);
+
+    const paraResult = document.createElement("p");
+    paraResult.textContent = " ";
+    paraResult.textContent = playRound(humanSelection, computerSelection);
+    result.appendChild(paraResult);
+
+    console.log(playRound(humanSelection, computerSelection));
+  
+
+
+  });
+});
+
+
+
+
 const playRound = (humanChoice, computerChoice) => {
+
+
+
   if (humanChoice === computerChoice) {
     return "Égalité !";
   } else if (
@@ -59,47 +110,7 @@ const playRound = (humanChoice, computerChoice) => {
   }
 };
 
-const playGame = () => {
-  let humanScore = 0;
-  let computerScore = 0;
 
-  for (let i = 0; i < 5; i++) {
-    console.log(`Manche ${i + 1}`);
-
-    let humanSelection = null;
-    while (!humanSelection) {
-      humanSelection = getHumanChoice();
-    }
-
-    const computerSelection = getComputerChoice();
-
-    console.log(`Choix du joueur : ${humanSelection}`);
-    console.log(`Choix de l'ordinateur : ${computerSelection}`);
-
-    const result = playRound(humanSelection, computerSelection);
-    console.log(result);
-
-    if (result === "Victoire !") {
-      humanScore++;
-    } else if (result === "Défaite !") {
-      computerScore++;
-    }
-
-    console.log(`Score : Humain ${humanScore}, Ordinateur ${computerScore}`);
-  }
-
-  console.log("Partie terminée !");
-  if (humanScore > computerScore) {
-    console.log("Vous avez gagné la partie !");
-  } else if (humanScore < computerScore) {
-    console.log("L'ordinateur a gagné la partie !");
-  } else {
-    console.log("La partie est une égalité !");
-  }
-};
-
-// Démarrer le jeu
-playGame();
 
 
 
