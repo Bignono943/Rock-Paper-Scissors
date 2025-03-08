@@ -35,9 +35,17 @@
 
     </div>
 
+    <style>
+
+.selected {
+    background-color: red; 
+}
+
+    </style>
+
 
     <script>
-        console.log("Hello World!");
+
 
 
 const choices = ["pierre", "papier", "ciseaux"];
@@ -47,43 +55,73 @@ const choicesMap = {
   ciseaux: choices[2] 
 };
 
+let humanScore = 0;
+let computerScore = 0;
+
         const getComputerChoice = () => {
   const randomIndex = Math.floor(Math.random() * choices.length);
   return choices[randomIndex];
 };
+
+const playRound = (humanChoice, computerChoice) => {
+
+
+
+if (humanChoice === computerChoice) {
+  return "Égalité !";
+} else if (
+  (humanChoice === "papier" && computerChoice === "pierre") ||
+  (humanChoice === "pierre" && computerChoice === "ciseaux") ||
+  (humanChoice === "ciseaux" && computerChoice === "papier")
+) {
+  return "Victoire !";
+} else {
+  return "Défaite !";
+}
+};
+
 
 const container = document.querySelector(".container");
 
 const result = document.createElement("div");
 result.classList.add("result");
 container.appendChild(result);
+
 const h3Result = document.createElement("h3");
 h3Result.textContent = "Résultat :";
 result.appendChild(h3Result);
 
+const paraChoice = document.createElement("p");
+const paraResult = document.createElement("p");
+result.appendChild(paraChoice);
+result.appendChild(paraResult);
+
 let humanSelection = null;
+let computerSelection = null;
+
+
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) => {
   button.addEventListener("click", (e) => {
 
-    buttons.forEach((btn) => btn.style.background = " ");
-    e.target.style.background = "red";
+    buttons.forEach((btn) => btn.classList.remove("selected"));
+    e.target.classList.add("selected");
 
-    const humanSelection = choicesMap[e.target.id];
-    const computerSelection = getComputerChoice();
+     humanSelection = choicesMap[e.target.id];
+     computerSelection = getComputerChoice();
 
-    const paraChoice = document.createElement("p");
     paraChoice.textContent = " ";
     paraChoice.innerHTML = `Vous avez choisi : ${humanSelection}<br>L'ordinateur a choisi : ${computerSelection}`;
-    result.appendChild(paraChoice);
+  
 
-    const paraResult = document.createElement("p");
     paraResult.textContent = " ";
     paraResult.textContent = playRound(humanSelection, computerSelection);
-    result.appendChild(paraResult);
 
-    console.log(playRound(humanSelection, computerSelection));
+    const play = playRound(humanSelection, computerSelection);
+    console.log(play)
+    
+    runningScore(play);
   
 
 
@@ -92,31 +130,105 @@ buttons.forEach((button) => {
 
 
 
+const score = document.createElement("div");
+container.appendChild(score);
+const totalScore = document.createElement("p");
+const finalResult = document.createElement("p");
 
-const playRound = (humanChoice, computerChoice) => {
+const runningScore = (play) => {
 
 
 
-  if (humanChoice === computerChoice) {
-    return "Égalité !";
-  } else if (
-    (humanChoice === "papier" && computerChoice === "pierre") ||
-    (humanChoice === "pierre" && computerChoice === "ciseaux") ||
-    (humanChoice === "ciseaux" && computerChoice === "papier")
-  ) {
-    return "Victoire !";
-  } else {
-    return "Défaite !";
-  }
+if (play === "Victoire !") {
+
+humanScore++; 
+}
+
+else if (play  === "Défaite !") {
+
+  computerScore++;
+  
+}
+
+
+
+totalScore.textContent = " ";
+totalScore.innerHTML = `Votre score : ${humanScore}<br>Score ordinateur : ${computerScore}`;
+score.appendChild(totalScore);
+
+
+if (humanScore === 5) {
+
+  finalResult.textContent = " ";
+  finalResult.textContent = "Bravo ! vous avez gagné la partie"
+  score.appendChild(finalResult);
+
+console.log("Gagné");
+
+disableButtons();
+showResetButton();
+
+}
+
+else if (computerScore === 5) {
+
+  finalResult.textContent = " ";
+  finalResult.textContent = " L'ordinateur à gagné, vous avez perdu !";
+  score.appendChild(finalResult);
+
+  console.log("perdu");
+
+  disableButtons();
+  showResetButton();
+
+}
+
+
 };
 
+const resetGame = () => {
+
+  humanScore = 0;
+  computerScore = 0;
+
+  finalResult.textContent = " ";
+  paraChoice.textContent = " ";
+  paraResult.textContent = " ";
+
+  buttons.forEach((btn) => btn.classList.remove("selected"));
+
+  const reset = document.getElementById("reset");
+    if (reset) reset.style.display = "none";
+
+    enableButtons();
 
 
+}
+
+const showResetButton = () => { 
+
+const resetButton = document.createElement("button");
+
+    resetButton.textContent = "Recommencer";
+    resetButton.setAttribute("id", "reset");
+
+    resetButton.addEventListener("click", resetGame);
+    score.appendChild(resetButton);
 
 
+ }
 
+ function disableButtons() {
+    buttons.forEach((btn) => {
+        btn.disabled = true; 
+    });
+}
 
-
+function enableButtons() {
+  buttons.forEach((btn) => {
+    btn.disabled = false;
+  } )
+}
 
 
 
